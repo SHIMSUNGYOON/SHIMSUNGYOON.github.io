@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 기본 설정 (Reset & Variables) --- */
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --accent-color: #2c3e50; /* 진한 남색 계열 */
+            --light-gray: #f4f4f4;
+            --gray-text: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; /* 부드러운 스크롤 */
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- 레이아웃 유틸리티 --- */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* 섹션 제목 밑줄 포인트 */
+        h2::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin-top: 10px;
+        }
+
+        /* --- 네비게이션 --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            border-bottom: 1px solid #eee;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a:hover {
+            color: var(--gray-text);
+        }
+
+        /* --- 소개 (About) 섹션 --- */
+        #about {
+            min-height: 100vh; /* 화면 꽉 차게 */
+            display: flex;
+            align-items: center;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap; /* 모바일 대응 */
+        }
+
+        /* 이미지 자리 (Placeholder) */
+        .profile-img-placeholder {
+            width: 300px;
+            height: 300px;
+            background-color: #ddd; /* 회색 배경 */
+            border-radius: 50%; /* 원형 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #777;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            overflow: hidden; /* 이미지가 원 밖으로 나가는 것 방지 */
+        }
+
+        /* 실제 이미지를 넣을 때 사용하는 클래스 (지금은 주석 처리된 img 태그 참고) */
+        .profile-img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .about-text p {
+            color: var(--gray-text);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* --- 기술 (Skills) 섹션 --- */
+        #skills {
+            background-color: var(--light-gray);
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .skill-tag {
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-weight: 500;
+            color: var(--accent-color);
+        }
+
+        /* --- 프로젝트 (Projects) 섹션 --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 반응형 그리드 */
+            gap: 30px;
+        }
+
+        .project-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .project-img {
+            height: 200px;
+            background-color: #ddd; /* 프로젝트 이미지 없을 때 회색 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #777;
+        }
+        
+        .project-info {
+            padding: 20px;
+        }
+
+        .project-info h3 {
+            margin-bottom: 10px;
+        }
+
+        .project-info p {
+            font-size: 0.9rem;
+            color: var(--gray-text);
+            margin-bottom: 15px;
+        }
+
+        .project-link {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* --- 연락처 (Contact) 섹션 --- */
+        #contact {
+            text-align: center;
+            background-color: var(--bg-color);
+        }
+
+        .contact-box {
+            margin-top: 20px;
+        }
+        
+        .contact-item {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            color: var(--gray-text);
+        }
+
+        /* --- 푸터 --- */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* --- 모바일 반응형 --- */
+        @media (max-width: 768px) {
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-img-placeholder {
+                width: 200px;
+                height: 200px;
+            }
+
+            .about-text h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">MyPortfolio</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="profile-img-placeholder">
+                    이미지 공간 (300x300)
+                </div>
+                
+                <div class="about-text">
+                    <h1>안녕하세요,<br>성장하는 개발자<br>[이름]입니다.</h1>
+                    <p>
+                        간결하고 효율적인 코드를 작성하며,<br>
+                        사용자에게 더 나은 경험을 제공하는 웹사이트를 만듭니다.<br>
+                        새로운 기술을 배우고 도전하는 것을 즐깁니다.
+                    </p>
+                    <a href="#contact" class="btn">Contact Me</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <span class="skill-tag">HTML5</span>
+                <span class="skill-tag">CSS3</span>
+                <span class="skill-tag">JavaScript</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">Git & GitHub</span>
+                <span class="skill-tag">Figma</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2>Projects</h2>
+            <div class="project-grid">
+                
+                <div class="project-card">
+                    <div class="project-img">Project Image</div>
+                    <div class="project-info">
+                        <h3>개인 포트폴리오 웹사이트</h3>
+                        <p>GitHub Pages를 활용하여 제작한 반응형 포트폴리오 사이트입니다. HTML/CSS만을 사용하여 가볍고 빠르게 제작했습니다.</p>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">Project Image</div>
+                    <div class="project-info">
+                        <h3>투두 리스트 앱</h3>
+                        <p>자바스크립트의 기본 기능을 활용하여 만든 할 일 관리 애플리케이션입니다. 로컬 스토리지를 사용하여 데이터를 저장합니다.</p>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-img">Project Image</div>
+                    <div class="project-info">
+                        <h3>날씨 정보 페이지</h3>
+                        <p>OpenWeatherMap API를 연동하여 현재 위치의 날씨를 보여주는 웹페이지입니다.</p>
+                        <a href="#" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Contact</h2>
+            <p>함께 일하고 싶거나 궁금한 점이 있다면 언제든 연락주세요.</p>
+            <div class="contact-box">
+                <div class="contact-item">📧 email@example.com</div>
+                <div class="contact-item">📞 010-1234-5678</div>
+                <div class="contact-item">
+                    <a href="https://github.com/본인아이디" target="_blank" style="text-decoration: underline;">GitHub Profile</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 My Portfolio. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
